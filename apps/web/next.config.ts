@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {
@@ -11,6 +10,12 @@ const nextConfig: NextConfig = {
         as: "*.css",
       },
     },
+  },
+  async redirects() {
+    return [
+      // Sementara: "/" langsung ke dashboard. Nanti diganti landing page.
+      { source: "/", destination: "/dashboard", permanent: false },
+    ];
   },
 };
 
