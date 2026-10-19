@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import type { CourseProgress } from "@/lib/mock/dashboard";
 import { cn } from "@/lib/utils";
-import { ProgressBar } from "./progress-bar";
+import { ProgressBar } from "@/components/progress-bar";
 
 export function ContinueLearningCard({ course }: { course: CourseProgress }) {
   const percent =
