@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { AppSidebar } from "@/components/app-sidebar";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
@@ -21,18 +21,16 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex min-h-screen bg-background`}>
-        {/* Sidebar Navigasi */}
-        <AppSidebar />
-        
-        {/* Area Konten Utama */}
-        <main className="flex-1 p-8 overflow-y-auto">
-          {children}
-        </main>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      {/* suppressHydrationWarning: meredam warning dari ekstensi browser (mis. Grammarly) yang menyisipkan atribut ke <body> */}
+      <body
+        suppressHydrationWarning
+        className="min-h-screen bg-background font-sans text-foreground antialiased"
+      >
+        {children}
       </body>
     </html>
   );

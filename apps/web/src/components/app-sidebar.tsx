@@ -1,58 +1,63 @@
+"use client";
+
 import Link from "next/link";
-import { 
-  LayoutDashboard, 
-  BookOpen, 
-  Terminal, 
-  Settings, 
-  Radio 
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { usePathname } from "next/navigation";
+import { BookOpen, LayoutDashboard, Radio, Settings, Terminal } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Courses", href: "/courses", icon: BookOpen },
   { label: "Labs & Simulations", href: "/labs", icon: Terminal },
   { label: "Settings", href: "/settings", icon: Settings },
-];
+] as const;
 
 export function AppSidebar() {
+  const pathname = usePathname();
+
   return (
-    <aside className="w-64 border-r bg-card h-screen flex flex-col justify-between p-4 sticky top-0">
+    <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col justify-between border-r bg-card p-4">
       <div className="space-y-6">
-        {/* Brand / Logo Platform */}
-        <div className="flex items-center gap-3 px-2">
-          <div className="p-2 bg-primary text-primary-foreground rounded-lg">
-            <Radio className="h-6 w-6" />
+        <Link href="/dashboard" className="flex items-center gap-3 px-2">
+          <div className="rounded-lg bg-primary p-2 text-primary-foreground">
+            <Radio className="size-5" aria-hidden />
           </div>
           <div>
-            <h1 className="font-bold text-base leading-tight">5G Edu Platform</h1>
-            <p className="text-xs text-muted-foreground">Tel-U x UTM</p>
+            <p className="text-base font-bold leading-tight">5G Edu Platform</p>
+            <p className="text-xs text-muted-foreground">Tel-U × UTM</p>
           </div>
-        </div>
+        </Link>
 
-        {/* Navigation Links */}
-        <nav className="space-y-1">
-          {navItems.map((item) => {
-            const Icon = item.icon;
+        <nav aria-label="Main navigation" className="space-y-1">
+          {navItems.map(({ label, href, icon: Icon }) => {
+            const isActive = pathname === href || pathname.startsWith(`${href}/`);
             return (
-              <Link key={item.href} href={item.href} className="block">
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start gap-3 text-muted-foreground hover:text-foreground cursor-pointer"
-                >
-                  <Icon className="h-4 w-4" />
-                  <span>{item.label}</span>
-                </Button>
+              <Link
+                key={href}
+                href={href}
+                aria-current={isActive ? "page" : undefined}
+                className={cn(
+                  buttonVariants({ variant: isActive ? "secondary" : "ghost" }),
+                  "w-full justify-start gap-3",
+                  !isActive && "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                <Icon className="size-4" aria-hidden />
+                <span>{label}</span>
               </Link>
             );
           })}
         </nav>
       </div>
 
-      {/* User Status / Badge Footer */}
-      <div className="p-3 bg-muted/50 rounded-lg text-xs space-y-1">
-        <p className="font-medium text-foreground">5G Core Lab Session</p>
-        <p className="text-muted-foreground">Status: <span className="text-green-500 font-semibold">Active</span></p>
+      {/* Dummy — nanti diisi data sesi lab dari backend */}
+      <div className="space-y-1 rounded-lg bg-muted/50 p-3 text-xs">
+        <p className="font-medium">5G Core Lab Session</p>
+        <p className="text-muted-foreground">
+          Status:{" "}
+          <span className="font-semibold text-green-600 dark:text-green-500">Active</span>
+        </p>
       </div>
     </aside>
   );
